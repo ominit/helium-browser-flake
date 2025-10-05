@@ -1,4 +1,4 @@
-Flake for inputnet's Helium browser
+Flake for [imput's Helium browser](https://helium.computer/)
 
 This packages the AppImage release of Helium for nix.
 
