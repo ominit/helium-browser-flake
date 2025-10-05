@@ -6,6 +6,7 @@
       systems = ["x86_64-linux"];
       imports = [
         ./package.nix
+        ./treefmt.nix
       ];
     };
 
