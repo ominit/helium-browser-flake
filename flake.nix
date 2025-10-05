@@ -1,5 +1,5 @@
 {
-  description = "Packaging helium";
+  description = "Flake for Helium Browser";
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
