@@ -17,7 +17,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          .github/update.sh --ci --only-check
+          bash .github/update.sh --ci --only-check
       - name: Install Nix
         if: steps.check.outputs.should_update == 'true'
         uses: cachix/install-nix-action@v31
@@ -29,7 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          .github/update.sh --ci
+          bash .github/update.sh --ci
       - name: Commit changes
         id: commit
         if: steps.check.outputs.should_update == 'true'
