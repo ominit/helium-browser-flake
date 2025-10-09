@@ -44,15 +44,19 @@ update_version() {
   fi
 
   if [ "$arch" = "aarch64" ]; then
-    download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-arm64.AppImage"
+    appimage_download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-arm64.AppImage"
+    tar_download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-arm64_linux.tar.xz"
   else
-    download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-$arch.AppImage"
+    appimage_download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-x86_64.AppImage"
+    tar_download_url="https://github.com/imputnet/helium-linux/releases/download/$remote/helium-$remote-x86_64_linux.tar.xz"
   fi
 
-  prefetch_output=$(nix store prefetch-file --hash-type sha256 --json "$download_url")
-  sha256=$(echo "$prefetch_output" | jq -r '.hash')
+  prefetch_output=$(nix store prefetch-file --hash-type sha256 --json "$tar_download_url")
+  tar_sha256=$(echo "$prefetch_output" | jq -r '.hash')
+  prefetch_output=$(nix store prefetch-file --hash-type sha256 --json "$appimage_download_url")
+  appimage_sha256=$(echo "$prefetch_output" | jq -r '.hash')
 
-  jq ".[\"$arch-$os\"] = {\"version\":\"$remote\",\"url\":\"$download_url\",\"sha256\":\"$sha256\"}" <sources.json >sources.json.tmp
+  jq ".[\"$arch-$os\"] = {\"version\":\"$remote\",\"tar_url\":\"$tar_download_url\",\"tar_sha256\":\"$tar_sha256\",\"appimage_url\":\"$appimage_download_url\",\"appimage_sha256\":\"$appimage_sha256\"}" <sources.json >sources.json.tmp
   mv sources.json.tmp sources.json
 
   if ! $ci; then
