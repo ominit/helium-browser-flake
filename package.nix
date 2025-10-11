@@ -64,11 +64,67 @@
         alsa-lib
         at-spi2-core
         qt6.qtbase
+        vulkan-loader
+        libva
+        libvdpau
+        libglvnd
+        mesa
+        glib
+        fontconfig
+        freetype
+        pango
+        cairo
+        libx11
+        atk
+        nss
+        nspr
+        libxcursor
+        libxext
+        libxfixes
+        libxrender
+        libxcb
+        alsa-lib
+        expat
+        cups
+        dbus
+        gdk-pixbuf
+        gcc-unwrapped.lib
+        systemd
+        libexif
+        pciutils
+        liberation_ttf
+        curl
+        util-linux
+        wget
+        flac
+        harfbuzz
+        icu
+        libpng
+        snappy
+        speechd
+        bzip2
+        libcap
+        at-spi2-atk
+        at-spi2-core
+        libkrb5
+        libdrm
+        libglvnd
+        libgbm
+        coreutils
+        libxkbcommon
+        pipewire
+        wayland
       ];
 
       runtimeDependencies = with pkgs; [libGL];
 
-      appendRunpaths = ["${pkgs.libGL}/lib"];
+      appendRunpaths = [
+        "${pkgs.libGL}/lib"
+        "${pkgs.mesa}/lib"
+        "${pkgs.vulkan-loader}/lib"
+        "${pkgs.libva}/lib"
+        "${pkgs.libvdpau}/lib"
+      ];
 
       patchelfFlags = ["--no-clobber-old-sections"];
       autoPatchelfIgnoreMissingDeps = ["libQt5Core.so.5" "libQt5Gui.so.5" "libQt5Widgets.so.5"];
@@ -76,12 +132,12 @@
       installPhase = ''
         runHook preInstall
 
-        mkdir -p "$prefix/lib/${pname}-bin-$version"
-        ls
-        cp -r "./" "$prefix/lib/${pname}-bin-$version"
+        libExecPath="$prefix/lib/${pname}-bin-$version"
+        mkdir -p "$libExecPath"
+        cp -rv ./ "$libExecPath/"
 
-        mkdir -p $out/bin
-        makeWrapper "$prefix/lib/${pname}-bin-$version/chrome-wrapper" "$out/bin/${pname}"
+        makeWrapper "$libExecPath/chrome-wrapper" "$out/bin/${pname}" \
+          --prefix LD_LIBRARY_PATH : "$rpath"
 
         runHook postInstall
       '';
