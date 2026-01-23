@@ -136,7 +136,7 @@
         mkdir -p "$libExecPath"
         cp -rv ./ "$libExecPath/"
 
-        makeWrapper "$libExecPath/chrome-wrapper" "$out/bin/${pname}" \
+        makeWrapper "$libExecPath/helium-wrapper" "$out/bin/${pname}" \
           --prefix LD_LIBRARY_PATH : "$rpath"
 
         runHook postInstall
