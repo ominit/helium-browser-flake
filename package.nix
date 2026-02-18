@@ -18,12 +18,6 @@
       inherit version;
       pname = "${pname}-appimage";
       src = src-appimage;
-
-      nativeBuildInputs = [pkgs.copyDesktopItems];
-      desktopItems = [
-        (pkgs.makeDesktopItem {
-          })
-      ];
     };
 
     src = pkgs.fetchurl {
@@ -37,86 +31,64 @@
       nativeBuildInputs = with pkgs; [
         autoPatchelfHook
         patchelfUnstable
-        copyDesktopItems
         kdePackages.wrapQtAppsHook
         makeWrapper
       ];
 
       buildInputs = with pkgs; [
-        libgbm
-        glibc
-        glib
+        alsa-lib
+        at-spi2-atk
+        at-spi2-core
+        atk
+        bzip2
+        cairo
+        coreutils
+        cups
+        curl
         dbus
         expat
-        cups
-        nspr
-        nss
-        libx11
-        libxcb
-        libxext
-        libxfixes
-        libxrandr
-        cairo
-        pango
-        at-spi2-atk
-        atk
-        gtk3
-        alsa-lib
-        at-spi2-core
-        qt6.qtbase
-        vulkan-loader
-        libva
-        libvdpau
-        libglvnd
-        mesa
-        glib
+        flac
         fontconfig
         freetype
-        pango
-        cairo
+        gcc-unwrapped.lib
+        gdk-pixbuf
+        glib
+        gtk3
+        harfbuzz
+        icu
+        liberation_ttf
+        libcap
+        libdrm
+        libexif
+        libglvnd
+        libgbm
+        libkrb5
+        libpng
+        libva
+        libvdpau
         libx11
-        atk
-        nss
-        nspr
+        libxcb
         libxcursor
         libxext
         libxfixes
+        libxkbcommon
+        libxrandr
         libxrender
-        libxcb
-        alsa-lib
-        expat
-        cups
-        dbus
-        gdk-pixbuf
-        gcc-unwrapped.lib
-        systemd
-        libexif
+        mesa
+        nspr
+        nss
+        pango
         pciutils
-        liberation_ttf
-        curl
-        util-linux
-        wget
-        flac
-        harfbuzz
-        icu
-        libpng
+        pipewire
+        qt6.qtbase
         snappy
         speechd
-        bzip2
-        libcap
-        at-spi2-atk
-        at-spi2-core
-        libkrb5
-        libdrm
-        libglvnd
-        libgbm
-        coreutils
-        libxkbcommon
-        pipewire
+        systemd
+        util-linux
+        vulkan-loader
         wayland
+        wget
       ];
-
-      runtimeDependencies = with pkgs; [libGL];
 
       appendRunpaths = [
         "${pkgs.libGL}/lib"
@@ -136,8 +108,15 @@
         mkdir -p "$libExecPath"
         cp -rv ./ "$libExecPath/"
 
+        mkdir -p "$out/bin"
         makeWrapper "$libExecPath/helium-wrapper" "$out/bin/${pname}" \
           --prefix LD_LIBRARY_PATH : "$rpath"
+
+        mkdir -p "$out/share/applications"
+        cp "$libExecPath/helium.desktop" "$out/share/applications/"
+
+        mkdir -p "$out/share/icons/hicolor/256x256/apps"
+        cp "$libExecPath/product_logo_256.png" "$out/share/icons/hicolor/256x256/apps/helium.png"
 
         runHook postInstall
       '';
