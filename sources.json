@@ -1,16 +1,16 @@
 {
   "x86_64-linux": {
-    "version": "0.10.5.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.5.1/helium-0.10.5.1-x86_64_linux.tar.xz",
-    "tar_sha256": "sha256-3hOM9PfuwtdTyQUVOzpAydv6LQHGCKlfKm8TZsdJs20=",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.5.1/helium-0.10.5.1-x86_64.AppImage",
-    "appimage_sha256": "sha256-c/ea8C1XjTkBo0/ujGHEbKWyCmRMxyuiuOzAO9AMf1o="
+    "version": "0.10.6.1",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.6.1/helium-0.10.6.1-x86_64_linux.tar.xz",
+    "tar_sha256": "sha256-pNzKGfnX8jdZsN3qX8E1No8Tza+7gThiHQIyiq8hnKI=",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.6.1/helium-0.10.6.1-x86_64.AppImage",
+    "appimage_sha256": "sha256-6xqNRaP3aqitEseexRVEEjKkJClC0j1HHZoRGQanhSk="
   },
   "aarch64-linux": {
-    "version": "0.10.5.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.5.1/helium-0.10.5.1-arm64_linux.tar.xz",
-    "tar_sha256": "sha256-2h5CW+zhzDX9Uw4PlRGbXRMyhb7yJqPe6XkJ7VzzUJI=",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.5.1/helium-0.10.5.1-arm64.AppImage",
-    "appimage_sha256": "sha256-7h0Uvn937RxYol7a50FWHC8n1VEgKy+EHdCAivsMEUo="
+    "version": "0.10.6.1",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.6.1/helium-0.10.6.1-arm64_linux.tar.xz",
+    "tar_sha256": "sha256-gH7UuXcrJoPzc11Wh7lqiyLkbovjsfBtomInEobjb3Q=",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.10.6.1/helium-0.10.6.1-arm64.AppImage",
+    "appimage_sha256": "sha256-2SDIEni0A3aVqABoaSB7qDyBUfllAc3V6EbGQf+VUAk="
   }
 }
