@@ -1,16 +1,16 @@
 {
   "x86_64-linux": {
-    "version": "0.14.7.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.7.1/helium-0.14.7.1-x86_64_linux.tar.xz",
-    "tar_sha256": "sha256-W7p+DEx85p56si+hNAKFVM4q8rh5aZLS+BNmUTFroiE=",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.7.1/helium-0.14.7.1-x86_64.AppImage",
-    "appimage_sha256": "sha256-JPsCvue71hlyS9woHsauX5xM/2PUJ+n8VEjOFquUDno="
+    "version": "0.14.8.2",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.8.2/helium-0.14.8.2-x86_64_linux.tar.xz",
+    "tar_sha256": "sha256-3XUwBw9sSQgPjTVX3oBGwK9PQXgN5J+ktdICey67wAE=",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.8.2/helium-0.14.8.2-x86_64.AppImage",
+    "appimage_sha256": "sha256-7Kde6Crsr6LdKnfER+6yE7JkU6+10xXtJ1GQEHhBtqg="
   },
   "aarch64-linux": {
-    "version": "0.14.7.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.7.1/helium-0.14.7.1-arm64_linux.tar.xz",
-    "tar_sha256": "sha256-z4ejQPj4Qeo3GL+F+IFDQt4VhLTuHGr4LWamUBH3040=",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.7.1/helium-0.14.7.1-arm64.AppImage",
-    "appimage_sha256": "sha256-v3XFlPgrjSLkGiTknH9GEB4n/Xck2q+RXO0isL5Spi0="
+    "version": "0.14.8.2",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.8.2/helium-0.14.8.2-arm64_linux.tar.xz",
+    "tar_sha256": "sha256-zlz6sguhNHj0QOKX8PW2cJBbMIQnQV5VZE7Msb7hvf0=",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.14.8.2/helium-0.14.8.2-arm64.AppImage",
+    "appimage_sha256": "sha256-DlO1kAQcltjH8K5sTdDb9aMXD5MMRgWuWvas04sjQh0="
   }
 }
