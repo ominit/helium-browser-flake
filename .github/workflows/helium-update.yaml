@@ -3,15 +3,19 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
+concurrency:
+  group: helium-update
+  cancel-in-progress: false
 jobs:
   update-helium-browser:
     name: Update Helium Browser
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Check if update is needed
         id: check
         env:
@@ -30,10 +34,20 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           bash .github/update.sh --ci
-      - name: Commit changes
-        id: commit
+      - name: Create update pull request
+        id: create-pr
         if: steps.check.outputs.should_update == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: peter-evans/create-pull-request@v8
         with:
-          commit_message: "${{ steps.update.outputs.commit_message }}"
-          file_pattern: "*"
+          commit-message: "${{ steps.update.outputs.commit_message }}"
+          title: "${{ steps.update.outputs.commit_message }}"
+          body: "Automated Helium Browser release update."
+          branch: automated/helium-browser-update
+          delete-branch: true
+          add-paths: sources.json
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-url != ''
+        run: bash .github/enable-auto-merge.sh
+        env:
+          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
+          GH_TOKEN: ${{ github.token }}

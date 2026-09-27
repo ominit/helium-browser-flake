@@ -9,6 +9,16 @@
     pname = "helium";
     version = info.version;
 
+    meta = {
+      description = "Privacy-focused web browser based on Chromium";
+      homepage = "https://helium.computer";
+      license = with pkgs.lib.licenses; [gpl3Only bsd3];
+      maintainers = [{github = "ominit";}];
+      platforms = ["x86_64-linux" "aarch64-linux"];
+      sourceProvenance = [pkgs.lib.sourceTypes.binaryNativeCode];
+      mainProgram = pname;
+    };
+
     src-appimage = pkgs.fetchurl {
       url = info.appimage_url;
       hash = info.appimage_sha256;
@@ -18,6 +28,19 @@
       inherit version;
       pname = "${pname}-appimage";
       src = src-appimage;
+      meta = meta // {mainProgram = "${pname}-appimage";};
+      extraInstallCommands = let
+        contents = pkgs.appimageTools.extract {
+          inherit version;
+          pname = "${pname}-appimage";
+          src = src-appimage;
+        };
+      in ''
+        install -Dm444 ${contents}/helium.desktop "$out/share/applications/helium-appimage.desktop"
+        substituteInPlace "$out/share/applications/helium-appimage.desktop" \
+          --replace-fail 'Exec=helium' "Exec=$out/bin/helium-appimage"
+        install -Dm444 ${contents}/helium.png "$out/share/icons/hicolor/256x256/apps/helium.png"
+      '';
     };
 
     src = pkgs.fetchurl {
@@ -26,7 +49,7 @@
     };
 
     helium = pkgs.stdenv.mkDerivation {
-      inherit pname version src;
+      inherit pname version src meta;
 
       nativeBuildInputs = with pkgs; [
         autoPatchelfHook
@@ -37,9 +60,7 @@
 
       buildInputs = with pkgs; [
         alsa-lib
-        at-spi2-atk
         at-spi2-core
-        atk
         bzip2
         cairo
         coreutils
@@ -68,7 +89,9 @@
         libvdpau
         libx11
         libxcb
+        libxcomposite
         libxcursor
+        libxdamage
         libxext
         libxfixes
         libxkbcommon
@@ -94,7 +117,7 @@
         "${pkgs.libGL}/lib"
         "${pkgs.mesa}/lib"
         "${pkgs.vulkan-loader}/lib"
-        "${pkgs.libva}/lib"
+        "${pkgs.lib.getLib pkgs.libva}/lib"
         "${pkgs.libvdpau}/lib"
       ];
 
@@ -114,6 +137,8 @@
 
         mkdir -p "$out/share/applications"
         cp "$libExecPath/helium.desktop" "$out/share/applications/"
+        substituteInPlace "$out/share/applications/helium.desktop" \
+          --replace-fail 'Exec=helium' "Exec=$out/bin/helium"
 
         mkdir -p "$out/share/icons/hicolor/256x256/apps"
         cp "$libExecPath/product_logo_256.png" "$out/share/icons/hicolor/256x256/apps/helium.png"

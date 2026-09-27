@@ -1,0 +1,19 @@
+name: Dependabot auto-merge
+on: pull_request_target
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'ominit/helium-browser-flake'
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Enable auto-merge for Dependabot PRs
+        run: bash .github/enable-auto-merge.sh
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ github.token }}

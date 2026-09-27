@@ -8,7 +8,12 @@
       programs.nixf-diagnose.enable = true;
       programs.deadnix.enable = true;
       programs.yamlfmt.enable = true;
-      programs.beautysh.enable = true;
+      programs.shfmt = {
+        enable = true;
+        indent_size = 2;
+      };
+      programs.shellcheck.enable = true;
+      programs.actionlint.enable = true;
     };
   };
 }
