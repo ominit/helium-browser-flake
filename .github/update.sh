@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ci=false
-only_check=false
-for arg in "$@"; do
-  case "$arg" in
-  --ci) ci=true ;;
-  --only-check) only_check=true ;;
-  *)
-    echo "Unknown argument: $arg" >&2
-    exit 1
-    ;;
-  esac
-done
-
-if $ci; then
-  : "${GITHUB_OUTPUT:?--ci requires GITHUB_OUTPUT}"
+if (($# > 0)); then
+  echo "Usage: $0" >&2
+  exit 1
 fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
@@ -32,17 +20,14 @@ sources=$(cat sources.json)
 updated=$sources
 targets=()
 
-asset_url() {
-  jq -er --arg name "$1" '
-    [.assets[] | select(.name == $name) | .browser_download_url]
+asset() {
+  jq -ec --arg name "$1" '
+    [.assets[] | select(.name == $name)]
     | select(length == 1) | .[0]
-    | select(type == "string" and startswith("https://github.com/imputnet/helium-linux/releases/download/"))
+    | select(.browser_download_url | type == "string" and startswith("https://github.com/imputnet/helium-linux/releases/download/"))
+    | select(.digest | type == "string" and test("^sha256:[0-9a-f]{64}$"))
+    | {url: .browser_download_url, hash: .digest}
   ' <<<"$remote_latest"
-}
-
-prefetch_hash() {
-  nix store prefetch-file --hash-type sha256 --json "$1" |
-    jq -er '.hash | select(type == "string") | select(test("^sha256-[A-Za-z0-9+/]{43}=$"))'
 }
 
 for arch in x86_64 aarch64; do
@@ -57,40 +42,28 @@ for arch in x86_64 aarch64; do
   if [[ $arch == aarch64 ]]; then
     release_arch=arm64
   fi
-  appimage_url=$(asset_url "helium-$remote-$release_arch.AppImage")
-  tar_url=$(asset_url "helium-$remote-${release_arch}_linux.tar.xz")
-  targets+=("$arch")
-
-  if $only_check; then
-    continue
-  fi
-
-  tar_hash=$(prefetch_hash "$tar_url")
-  appimage_hash=$(prefetch_hash "$appimage_url")
+  tar=$(asset "helium-$remote-${release_arch}_linux.tar.xz")
+  appimage=$(asset "helium-$remote-$release_arch.AppImage")
   updated=$(jq --arg system "$system" --arg version "$remote" \
-    --arg tar_url "$tar_url" --arg tar_hash "$tar_hash" \
-    --arg appimage_url "$appimage_url" --arg appimage_hash "$appimage_hash" \
-    '.[$system] = {version: $version, tar_url: $tar_url, tar_sha256: $tar_hash,
-      appimage_url: $appimage_url, appimage_sha256: $appimage_hash}' <<<"$updated")
+    --argjson tar "$tar" --argjson appimage "$appimage" \
+    '.[$system] = {version: $version, tar_url: $tar.url, tar_sha256: $tar.hash,
+      appimage_url: $appimage.url, appimage_sha256: $appimage.hash}' <<<"$updated")
+  targets+=("$arch")
 done
 
-should_update=false
-if ((${#targets[@]} > 0)); then
-  should_update=true
+if ((${#targets[@]} == 0)); then
+  echo "Up to date"
+  exit 0
 fi
 
-if $should_update && ! $only_check; then
-  tmp=$(mktemp sources.json.XXXXXX)
-  trap 'rm -f "$tmp"' EXIT
-  printf '%s\n' "$updated" >"$tmp"
-  chmod --reference=sources.json "$tmp"
-  mv "$tmp" sources.json
-fi
+tmp=$(mktemp sources.json.XXXXXX)
+trap 'rm -f "$tmp"' EXIT
+printf '%s\n' "$updated" >"$tmp"
+chmod --reference=sources.json "$tmp"
+mv "$tmp" sources.json
 
-echo "should_update=$should_update"
-if $ci; then
-  echo "should_update=$should_update" >>"$GITHUB_OUTPUT"
-  if $should_update && ! $only_check; then
-    echo "commit_message=update: helium @ ${targets[*]} to $remote" >>"$GITHUB_OUTPUT"
-  fi
+message="update: helium @ ${targets[*]} to $remote"
+echo "$message"
+if [[ -n ${GITHUB_OUTPUT:-} ]]; then
+  echo "commit_message=$message" >>"$GITHUB_OUTPUT"
 fi

@@ -16,27 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Check if update is needed
-        id: check
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          bash .github/update.sh --ci --only-check
-      - name: Install Nix
-        if: steps.check.outputs.should_update == 'true'
-        uses: cachix/install-nix-action@v31
-        with:
-          nix_path: nixpkgs=channel:nixpkgs-unstable
-      - name: Update versions
+      - name: Update sources
         id: update
-        if: steps.check.outputs.should_update == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          bash .github/update.sh --ci
+        run: bash .github/update.sh
       - name: Create update pull request
         id: create-pr
-        if: steps.check.outputs.should_update == 'true'
+        if: steps.update.outputs.commit_message != ''
         uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "${{ steps.update.outputs.commit_message }}"
