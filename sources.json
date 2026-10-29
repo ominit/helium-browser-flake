@@ -1,16 +1,16 @@
 {
   "x86_64-linux": {
-    "version": "0.20.1.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-x86_64_linux.tar.xz",
-    "tar_sha256": "sha256:2023fa44cefa0fbd3e19071c87e90d61275f08ba8f5b48d58c235215565e9b53",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-x86_64.AppImage",
-    "appimage_sha256": "sha256:d4b789b25d0a9ae12c76671e444e8a85edcf828e0419c678d18c41fb1ac3030e"
+    "version": "0.20.2.1",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.2.1/helium-0.20.2.1-x86_64_linux.tar.xz",
+    "tar_sha256": "sha256:ba92acb27ec6cda36a8b948e2154009aaee0d633222ad244be25e736a143e6fa",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.2.1/helium-0.20.2.1-x86_64.AppImage",
+    "appimage_sha256": "sha256:ac4928424d31c863fff3ab75d3be873dfc92ede00e6889634dcbc5881a120397"
   },
   "aarch64-linux": {
-    "version": "0.20.1.1",
-    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-arm64_linux.tar.xz",
-    "tar_sha256": "sha256:211a95e10960d62b376751920fbb93cdff051f5bfcfa136b52e970f4e6963577",
-    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.1.1/helium-0.20.1.1-arm64.AppImage",
-    "appimage_sha256": "sha256:0ace4ed79901c89db9a4759458026644f1b4cdfc44332be9e39f2956920f9d52"
+    "version": "0.20.2.1",
+    "tar_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.2.1/helium-0.20.2.1-arm64_linux.tar.xz",
+    "tar_sha256": "sha256:c7ab45e84961aa0112404ac4ef2be3da82d1b9c8af60b85557398122fa7cbc66",
+    "appimage_url": "https://github.com/imputnet/helium-linux/releases/download/0.20.2.1/helium-0.20.2.1-arm64.AppImage",
+    "appimage_sha256": "sha256:483a45bcf9a3e618eb46ff34113abaef017f51bc59dde0b535a13d04fe93b239"
   }
 }
